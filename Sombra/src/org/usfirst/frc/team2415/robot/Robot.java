@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	long startTime;
+	
 	final double DEADBAND = 0.05;
 	
 	final int RIGHT_TALON = 0;
@@ -71,10 +73,11 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autoSelected = chooser.getSelected();
-		// autoSelected = SmartDashboard.getString("Auto Selector",
-		// defaultAuto);
-		System.out.println("Auto selected: " + autoSelected);
+		startTime = System.currentTimeMillis();
+		/*autoSelected = chooser.getSelected();
+		  autoSelected = SmartDashboard.getString("Auto Selector",
+		  defaultAuto);
+		System.out.println("Auto selected: " + autoSelected);*/
 	}
 
 	/**
@@ -82,7 +85,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		switch (autoSelected) {
+		
+		if ((System.currentTimeMillis() - startTime)/1000 <= 5) {
+			leftTal.set(0.5);
+			rightTal.set(0.5);
+		} else {
+			solenoid.set(DoubleSolenoid.Value.kForward);
+		}
+		
+		/*switch (autoSelected) {
 		case customAuto:
 			// Put custom auto code here
 			break;
@@ -90,7 +101,7 @@ public class Robot extends IterativeRobot {
 		default:
 			// Put default auto code here
 			break;
-		}
+		}*/
 	}
 
 	/**
