@@ -56,7 +56,7 @@ public class Robot extends IterativeRobot {
 		leftTal = new Talon(LEFT_TALON);
 		rightTal = new Talon(RIGHT_TALON);
 
-		solenoid = new DoubleSolenoid(FORWARD_SOLENOID, BACKWARD_SOLENOID);
+		solenoid = new DoubleSolenoid(20, FORWARD_SOLENOID, BACKWARD_SOLENOID);
 		
 	}
 
@@ -87,8 +87,8 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		
 		if ((System.currentTimeMillis() - startTime)/1000 <= 5) {
-			leftTal.set(0.5);
-			rightTal.set(0.5);
+			leftTal.set(0.70);
+			rightTal.set(0.70);
 		} else {
 			solenoid.set(DoubleSolenoid.Value.kForward);
 		}
@@ -110,21 +110,23 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 	
-		double leftY = gamepad.getRawAxis(1);
-		double rightX = gamepad.getRawAxis(4);
+		double leftY = -gamepad.getRawAxis(4);
+		double rightX = gamepad.getRawAxis(1);
 
-		if (rightX < DEADBAND) {
+		/*
+		if (Math.abs(rightX) < DEADBAND) {
 			rightX = 0;
 		}
-		if (leftY < DEADBAND) {
+		if (Math.abs(leftY) < DEADBAND) {
 			leftY = 0;
 		}
+		*/
 		
-		double left = leftY + rightX;
-		double right = leftY - rightX;
+		double right = -leftY + rightX;
+		double left = -leftY - rightX;
 
-		leftTal.set(0.5 * left);
-		rightTal.set(0.5 * right);
+		leftTal.set(0.6 * left);
+		rightTal.set(0.6 * right);
 
 		if (gamepad.getAButton()) {
 			solenoid.set(DoubleSolenoid.Value.kForward); // Forward
