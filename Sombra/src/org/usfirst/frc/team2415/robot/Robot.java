@@ -21,10 +21,10 @@ public class Robot extends IterativeRobot {
 	final double DEADBAND = 0.05;
 	
 	final int RIGHT_TALON = 0;
-	final int LEFT_TALON = 2;
+	final int LEFT_TALON = 1;
 	
-	final int FORWARD_SOLENOID = 5;
-	final int BACKWARD_SOLENOID = 3;
+	final int FORWARD_SOLENOID = 0;
+	final int BACKWARD_SOLENOID = 1;
 
 	public XboxController gamepad;
 	public Talon leftTal, rightTal;
