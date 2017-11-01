@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 	long startTime;
 	
-	final double DEADBAND = 0.05;
+	final double DEADBAND = 6;
 	
 	final int RIGHT_TALON = 0;
 	final int LEFT_TALON = 1;
