@@ -7,11 +7,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -33,17 +32,19 @@ public class Robot extends IterativeRobot {
 	
 	final double DEADBAND = 0.05;
 	
-	final int RIGHT_TALON = 0;
-	final int LEFT_TALON = 1;
+	final int RIGHT_TALON1 = 0;
+	final int RIGHT_TALON2 = 1;
+	final int LEFT_TALON1 = 2;
+	final int LEFT_TALON2 = 3;
 	
 	final int FORWARD_SOLENOID = 0;
 	final int BACKWARD_SOLENOID = 1;
 
 	public XboxController gamepad;
-	public CANTalon leftTal, rightTal;
+	public WPI_TalonSRX leftTal1, leftTal2, rightTal1, rightTal2;
 	
-	public DoubleSolenoid solenoid;
-	public Compressor compressor;
+//	public DoubleSolenoid solenoid;
+//	public Compressor compressor;
 	
 	final String defaultAuto = "Default";
 	final String replayAuto = "Replay Auto";
@@ -65,19 +66,23 @@ public class Robot extends IterativeRobot {
 		
 		bool = false;
 		
-		compressor = new Compressor();
+//		compressor = new Compressor();
 
 		gamepad = new XboxController(0);
 		
-		leftTal = new CANTalon(LEFT_TALON);
-		rightTal = new CANTalon(RIGHT_TALON);
+		leftTal1 = new WPI_TalonSRX(LEFT_TALON1);
+		leftTal2 = new WPI_TalonSRX(LEFT_TALON2);
+		rightTal1 = new WPI_TalonSRX(RIGHT_TALON1);
+		rightTal2 = new WPI_TalonSRX(RIGHT_TALON2);
 		
-		leftTal.set(0);
-		rightTal.set(0);
+		leftTal1.set(0);
+		leftTal2.set(0);
+		rightTal1.set(0);
+		rightTal2.set(0);
 
-		solenoid = new DoubleSolenoid(FORWARD_SOLENOID, BACKWARD_SOLENOID);
-		
-		solenoid.set(DoubleSolenoid.Value.kReverse);
+//		solenoid = new DoubleSolenoid(FORWARD_SOLENOID, BACKWARD_SOLENOID);
+//		
+//		solenoid.set(DoubleSolenoid.Value.kReverse);
 		
 	}
 
@@ -99,7 +104,7 @@ public class Robot extends IterativeRobot {
 		System.out.println("Auto selected: " + autoSelected);
 		if (autoSelected.equals(replayAuto)) {
 			try {
-				br = new BufferedReader(new FileReader("/home/lvuser/test.auto"));
+				br = new BufferedReader(new FileReader("C:\\Users\\westm\\auto\\test.csv"));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -122,9 +127,9 @@ public class Robot extends IterativeRobot {
 					String[] stuff = line.split(",");
 					double a = Double.parseDouble(stuff[0]);
 					double b = Double.parseDouble(stuff[1]);
-					boolean c = Boolean.parseBoolean(stuff[2]);
+//					boolean c = Boolean.parseBoolean(stuff[2]);
 					arcadeDrive(a, b);
-					solenoidSwitch(c);
+//					solenoidSwitch(c);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -141,7 +146,7 @@ public class Robot extends IterativeRobot {
 	public void teleopInit(){
 		if (recordMode) {
 			try {
-				bw = new BufferedWriter(new FileWriter("/home/lvuser/test.auto"));
+				bw = new BufferedWriter(new FileWriter("C:\\Users\\westm\\auto\\test.csv"));
 				System.out.println("Buffered Writer Created!");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -157,14 +162,14 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		
-		if (bw != null && gamepad.getRawButton(6)) {
+		if (bw != null) {
 			try {
-				if (solenoid.get() == DoubleSolenoid.Value.kForward) {
-					bool = true;
-				} else {
-					bool = false;
-				}
-				bw.write(gamepad.getRawAxis(1) + "," + gamepad.getRawAxis(4) + "," + bool + "\n");
+//				if (solenoid.get() == DoubleSolenoid.Value.kForward) {
+//					bool = true;
+//				} else {
+//					bool = false;
+//				}
+				bw.write(gamepad.getRawAxis(1) + "," + gamepad.getRawAxis(4) +/* "," + bool +*/ "\n");
 				System.out.println("WRITING!");
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -173,11 +178,11 @@ public class Robot extends IterativeRobot {
 		}
 		arcadeDrive(gamepad.getRawAxis(1), gamepad.getRawAxis(4));
 		
-		if (gamepad.getAButton()) {
-			solenoidSwitch(true);
-		} else {
-			solenoidSwitch(false);
-		}
+//		if (gamepad.getAButton()) {
+//			solenoidSwitch(true);
+//		} else {
+//			solenoidSwitch(false);
+//		}
 //		SmartDashboard.putNumber("Encoder Ticks", encoder.getDistance());
 	
 		/*double leftY = gamepad.getRawAxis(1);
@@ -211,11 +216,25 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 	}
 	
-	public void arcadeDrive(double leftY, double rightX) {
-		if (rightX < DEADBAND) {
+	public void disabledInit(){
+		boolean success = false;
+		if (bw != null) {
+			try {
+				bw.flush();
+				bw.close();
+				success = true;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("SUCCESS: " + success);
+	}
+	
+	public void arcadeDrive(double rightX, double leftY) {
+		if (Math.abs(rightX) < Math.abs(DEADBAND)) {
 			rightX = 0;
 		}
-		if (leftY < DEADBAND) {
+		if (Math.abs(leftY) < Math.abs(DEADBAND)) {
 			leftY = 0;
 		}
 		
@@ -226,16 +245,18 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Left Y", leftY);
 		SmartDashboard.putNumber("Right X", rightX);
 
-		leftTal.set(0.67 * left);
-		rightTal.set(0.67 * right);
+		leftTal1.set(0.67 * left);
+		leftTal2.set(0.67 * left);
+		rightTal1.set(0.67 * right);
+		rightTal2.set(0.67 * right);
 	}
 	
-	public void solenoidSwitch(boolean extend) {
-		if (extend) {
-			solenoid.set(DoubleSolenoid.Value.kForward);
-		} else {
-			solenoid.set(DoubleSolenoid.Value.kReverse);
-		}
-	}
+//	public void solenoidSwitch(boolean extend) {
+//		if (extend) {
+//			solenoid.set(DoubleSolenoid.Value.kForward);
+//		} else {
+//			solenoid.set(DoubleSolenoid.Value.kReverse);
+//		}
+//	}
 	
 }
