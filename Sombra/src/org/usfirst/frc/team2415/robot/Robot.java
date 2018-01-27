@@ -39,8 +39,6 @@ public class Robot extends IterativeRobot {
 	public XboxController gamepad;
 	public WPI_TalonSRX frontLeftTal, frontRightTal, backLeftTal, backRightTal;
 	public DigitalInput switchSwitch, scaleSwitch, topSwitch;
-	public DoubleSolenoid solenoid;
-	public Compressor compressor;
 	
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
@@ -59,14 +57,11 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 		
-		compressor = new Compressor();
 
 		gamepad = new XboxController(0);
 		
 		frontLeftTal = new WPI_TalonSRX(FRONT_LEFT_TALON);
 		frontRightTal = new WPI_TalonSRX(FRONT_RIGHT_TALON);
-
-		solenoid = new DoubleSolenoid(20, FORWARD_SOLENOID, BACKWARD_SOLENOID);
 		
 		switchSwitch = new DigitalInput(SWITCH_SWITCH);
 		scaleSwitch = new DigitalInput(SCALE_SWITCH);
@@ -98,12 +93,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		
-		if ((System.currentTimeMillis() - startTime)/1000 <= 5) {
-
-		} else {
-			solenoid.set(DoubleSolenoid.Value.kForward);
-		}
+	
 		
 		/*switch (autoSelected) {
 		case customAuto:
@@ -142,11 +132,11 @@ public class Robot extends IterativeRobot {
 		frontRightTal.set(0.6 * right);
 		backRightTal.set(0.6 * right);
 		
-		if (gamepad.getBumper(Hand.kLeft)) {
-			solenoid.set(DoubleSolenoid.Value.kForward); // Forward
-		} else {
-			solenoid.set(DoubleSolenoid.Value.kReverse); // Reverse
-		}
+//		if (gamepad.getBumper(Hand.kLeft)) {
+//			solenoid.set(DoubleSolenoid.Value.kForward); // Forward
+//		} else {
+//			solenoid.set(DoubleSolenoid.Value.kReverse); // Reverse
+//		}
 		
 	}
 
