@@ -62,6 +62,8 @@ public class Robot extends IterativeRobot {
 		
 		frontLeftTal = new WPI_TalonSRX(FRONT_LEFT_TALON);
 		frontRightTal = new WPI_TalonSRX(FRONT_RIGHT_TALON);
+		backLeftTal = new WPI_TalonSRX(BACK_LEFT_TALON);
+		backRightTal = new WPI_TalonSRX(BACK_RIGHT_TALON);
 		
 		switchSwitch = new DigitalInput(SWITCH_SWITCH);
 		scaleSwitch = new DigitalInput(SCALE_SWITCH);
