@@ -1,9 +1,13 @@
 package org.usfirst.frc.team2415.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,15 +24,21 @@ public class Robot extends IterativeRobot {
 	
 	final double DEADBAND = 0.05;
 	
-	final int RIGHT_TALON = 0;
-	final int LEFT_TALON = 1;
+	final int FRONT_RIGHT_TALON = 14;
+	final int BACK_RIGHT_TALON = 15;
+	final int FRONT_LEFT_TALON = 0;
+	final int BACK_LEFT_TALON = 1;
 	
-	final int FORWARD_SOLENOID = 0;
-	final int BACKWARD_SOLENOID = 1;
+	final int FORWARD_SOLENOID = 4;
+	final int BACKWARD_SOLENOID = 5;
+	
+	final int SWITCH_SWITCH = 6;
+	final int SCALE_SWITCH = 7;
+	final int TOP_SWITCH = 8;
 
 	public XboxController gamepad;
-	public Talon leftTal, rightTal;
-	
+	public WPI_TalonSRX frontLeftTal, frontRightTal, backLeftTal, backRightTal;
+	public DigitalInput switchSwitch, scaleSwitch, topSwitch;
 	public DoubleSolenoid solenoid;
 	public Compressor compressor;
 	
@@ -53,11 +63,14 @@ public class Robot extends IterativeRobot {
 
 		gamepad = new XboxController(0);
 		
-		leftTal = new Talon(LEFT_TALON);
-		rightTal = new Talon(RIGHT_TALON);
+		frontLeftTal = new WPI_TalonSRX(FRONT_LEFT_TALON);
+		frontRightTal = new WPI_TalonSRX(FRONT_RIGHT_TALON);
 
 		solenoid = new DoubleSolenoid(20, FORWARD_SOLENOID, BACKWARD_SOLENOID);
 		
+		switchSwitch = new DigitalInput(SWITCH_SWITCH);
+		scaleSwitch = new DigitalInput(SCALE_SWITCH);
+		topSwitch = new DigitalInput(TOP_SWITCH);
 	}
 
 	/**
@@ -87,8 +100,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		
 		if ((System.currentTimeMillis() - startTime)/1000 <= 5) {
-			leftTal.set(0.70);
-			rightTal.set(0.70);
+
 		} else {
 			solenoid.set(DoubleSolenoid.Value.kForward);
 		}
@@ -125,10 +137,12 @@ public class Robot extends IterativeRobot {
 		double right = -leftY + rightX;
 		double left = -leftY - rightX;
 
-		leftTal.set(0.6 * left);
-		rightTal.set(0.6 * right);
-
-		if (gamepad.getAButton()) {
+		frontLeftTal.set(0.6 * left);
+		backLeftTal.set(0.6 * left);
+		frontRightTal.set(0.6 * right);
+		backRightTal.set(0.6 * right);
+		
+		if (gamepad.getBumper(Hand.kLeft)) {
 			solenoid.set(DoubleSolenoid.Value.kForward); // Forward
 		} else {
 			solenoid.set(DoubleSolenoid.Value.kReverse); // Reverse
