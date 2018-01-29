@@ -1,3 +1,5 @@
+//For Harvey, from Yash
+
 package org.usfirst.frc.team2415.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -113,27 +115,23 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		double leftY;
-		double rightX;
-		if (gamepad.getRawAxis(4) > DEADBAND || gamepad.getRawAxis(1) > DEADBAND) {
-			leftY = -gamepad.getRawAxis(4);
-			rightX = gamepad.getRawAxis(1);
-		} else {
-			leftY = 0;
-			rightX = 0;
-		}
+		double leftY = -gamepad.getRawAxis(4);
+		double rightX =  gamepad.getRawAxis(1);
 
-		/*
 		if (Math.abs(rightX) < DEADBAND) {
 			rightX = 0;
 		}
 		if (Math.abs(leftY) < DEADBAND) {
 			leftY = 0;
 		}
-		 */
-
 		double right = -leftY + rightX;
 		double left = -leftY - rightX;
+		if (leftY > 0) {
+			left = (-leftY - rightX)*1.5;
+		} else {
+			right = (-leftY + rightX)*1.5;
+
+		}
 
 		frontLeftTal.set(0.6 * left);
 		backLeftTal.set(0.6 * left);
