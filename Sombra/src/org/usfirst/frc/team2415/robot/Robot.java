@@ -21,17 +21,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 	long startTime;
-	
+
 	final double DEADBAND = 0.05;
-	
+
 	final int FRONT_RIGHT_TALON = 14;
 	final int BACK_RIGHT_TALON = 15;
 	final int FRONT_LEFT_TALON = 0;
 	final int BACK_LEFT_TALON = 1;
-	
+
 	final int FORWARD_SOLENOID = 4;
 	final int BACKWARD_SOLENOID = 5;
-	
+
 	final int SWITCH_SWITCH = 6;
 	final int SCALE_SWITCH = 7;
 	final int TOP_SWITCH = 8;
@@ -39,13 +39,13 @@ public class Robot extends IterativeRobot {
 	public XboxController gamepad;
 	public WPI_TalonSRX frontLeftTal, frontRightTal, backLeftTal, backRightTal;
 	public DigitalInput switchSwitch, scaleSwitch, topSwitch;
-	
+
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
-	
-	
+
+
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -56,15 +56,15 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
-		
+
 
 		gamepad = new XboxController(0);
-		
+
 		frontLeftTal = new WPI_TalonSRX(FRONT_LEFT_TALON);
 		frontRightTal = new WPI_TalonSRX(FRONT_RIGHT_TALON);
 		backLeftTal = new WPI_TalonSRX(BACK_LEFT_TALON);
 		backRightTal = new WPI_TalonSRX(BACK_RIGHT_TALON);
-		
+
 		switchSwitch = new DigitalInput(SWITCH_SWITCH);
 		scaleSwitch = new DigitalInput(SCALE_SWITCH);
 		topSwitch = new DigitalInput(TOP_SWITCH);
@@ -95,8 +95,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-	
-		
+
+
 		/*switch (autoSelected) {
 		case customAuto:
 			// Put custom auto code here
@@ -113,9 +113,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-	
-		double leftY = -gamepad.getRawAxis(4);
-		double rightX = gamepad.getRawAxis(1);
+		double leftY;
+		double rightX;
+		if (gamepad.getRawAxis(4) > DEADBAND || gamepad.getRawAxis(1) > DEADBAND) {
+			leftY = -gamepad.getRawAxis(4);
+			rightX = gamepad.getRawAxis(1);
+		} else {
+			leftY = 0;
+			rightX = 0;
+		}
 
 		/*
 		if (Math.abs(rightX) < DEADBAND) {
@@ -124,8 +130,8 @@ public class Robot extends IterativeRobot {
 		if (Math.abs(leftY) < DEADBAND) {
 			leftY = 0;
 		}
-		*/
-		
+		 */
+
 		double right = -leftY + rightX;
 		double left = -leftY - rightX;
 
@@ -133,13 +139,13 @@ public class Robot extends IterativeRobot {
 		backLeftTal.set(0.6 * left);
 		frontRightTal.set(0.6 * right);
 		backRightTal.set(0.6 * right);
-		
-//		if (gamepad.getBumper(Hand.kLeft)) {
-//			solenoid.set(DoubleSolenoid.Value.kForward); // Forward
-//		} else {
-//			solenoid.set(DoubleSolenoid.Value.kReverse); // Reverse
-//		}
-		
+
+		//		if (gamepad.getBumper(Hand.kLeft)) {
+		//			solenoid.set(DoubleSolenoid.Value.kForward); // Forward
+		//		} else {
+		//			solenoid.set(DoubleSolenoid.Value.kReverse); // Reverse
+		//		}
+
 	}
 
 	/**
