@@ -117,17 +117,23 @@ public class Robot extends IterativeRobot {
 		double leftY = -gamepad.getRawAxis(4);
 		double rightX = gamepad.getRawAxis(1);
 
-		/*
+		
 		if (Math.abs(rightX) < DEADBAND) {
 			rightX = 0;
 		}
 		if (Math.abs(leftY) < DEADBAND) {
 			leftY = 0;
 		}
-		*/
+		
 		
 		double right = -leftY + rightX;
 		double left = -leftY - rightX;
+		
+		if (leftY > 0) {
+			left *= 1.2;
+		} else {
+			right *= 2.7;
+		}
 
 		frontLeftTal.set(0.6 * left);
 		backLeftTal.set(0.6 * left);
