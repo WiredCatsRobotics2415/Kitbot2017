@@ -40,7 +40,9 @@ public class Robot extends IterativeRobot {
 
 	public XboxController gamepad;
 	public WPI_TalonSRX frontLeftTal, frontRightTal, backLeftTal, backRightTal;
-	public DigitalInput switchSwitch, scaleSwitch, topSwitch;
+	public Compressor compressor;
+	public Elevator elevator;
+	//public DigitalInput switchSwitch, scaleSwitch, topSwitch;
 
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
@@ -59,6 +61,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 
+		compressor = new Compressor();
 
 		gamepad = new XboxController(0);
 
@@ -66,10 +69,13 @@ public class Robot extends IterativeRobot {
 		frontRightTal = new WPI_TalonSRX(FRONT_RIGHT_TALON);
 		backLeftTal = new WPI_TalonSRX(BACK_LEFT_TALON);
 		backRightTal = new WPI_TalonSRX(BACK_RIGHT_TALON);
-
+		
+		elevator = new Elevator();
+		/*
 		switchSwitch = new DigitalInput(SWITCH_SWITCH);
 		scaleSwitch = new DigitalInput(SCALE_SWITCH);
 		topSwitch = new DigitalInput(TOP_SWITCH);
+		 */
 	}
 
 	/**
@@ -133,27 +139,22 @@ public class Robot extends IterativeRobot {
 			left *= 1.2;
 		} else {
 			right *= 2.7;
-
-			if (leftY > 0) {
-				left = (-leftY - rightX)*1.5;
-			} else {
-				right = (-leftY + rightX)*1.5;
-
-			}
-
-			frontLeftTal.set(0.6 * left);
-			backLeftTal.set(0.6 * left);
-			frontRightTal.set(0.6 * right);
-			backRightTal.set(0.6 * right);
-
-			//		if (gamepad.getBumper(Hand.kLeft)) {
-			//			solenoid.set(DoubleSolenoid.Value.kForward); // Forward
-			//		} else {
-			//			solenoid.set(DoubleSolenoid.Value.kReverse); // Reverse
-			//		}
-
 		}
+		frontLeftTal.set(0.6 * left);
+		backLeftTal.set(0.6 * left);
+		frontRightTal.set(0.6 * right);
+		backRightTal.set(0.6 * right);
+		
+		elevator.elevate(gamepad.getRawAxis(2), gamepad.getRawAxis(3));
+		
+		//		if (gamepad.getBumper(Hand.kLeft)) {
+		//			solenoid.set(DoubleSolenoid.Value.kForward); // Forward
+		//		} else {
+		//			solenoid.set(DoubleSolenoid.Value.kReverse); // Reverse
+		//		}
+
 	}
+
 	/**
 	 * This function is called periodically during test mode
 	 */
