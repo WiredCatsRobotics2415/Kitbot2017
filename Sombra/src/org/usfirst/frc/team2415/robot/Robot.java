@@ -118,51 +118,42 @@ public class Robot extends IterativeRobot {
 		double leftY = -gamepad.getRawAxis(4);
 		double rightX =  gamepad.getRawAxis(1);
 
-<<<<<<< HEAD
-		
-=======
->>>>>>> branch 'Protobot2018' of https://github.com/WiredCatsRobotics2415/Kitbot2017.git
+
 		if (Math.abs(rightX) < DEADBAND) {
 			rightX = 0;
 		}
 		if (Math.abs(leftY) < DEADBAND) {
 			leftY = 0;
 		}
-<<<<<<< HEAD
-		
-		
-=======
->>>>>>> branch 'Protobot2018' of https://github.com/WiredCatsRobotics2415/Kitbot2017.git
+
 		double right = -leftY + rightX;
 		double left = -leftY - rightX;
-<<<<<<< HEAD
-		
+
 		if (leftY > 0) {
 			left *= 1.2;
 		} else {
 			right *= 2.7;
-=======
-		if (leftY > 0) {
-			left = (-leftY - rightX)*1.5;
-		} else {
-			right = (-leftY + rightX)*1.5;
 
->>>>>>> branch 'Protobot2018' of https://github.com/WiredCatsRobotics2415/Kitbot2017.git
+			if (leftY > 0) {
+				left = (-leftY - rightX)*1.5;
+			} else {
+				right = (-leftY + rightX)*1.5;
+
+			}
+
+			frontLeftTal.set(0.6 * left);
+			backLeftTal.set(0.6 * left);
+			frontRightTal.set(0.6 * right);
+			backRightTal.set(0.6 * right);
+
+			//		if (gamepad.getBumper(Hand.kLeft)) {
+			//			solenoid.set(DoubleSolenoid.Value.kForward); // Forward
+			//		} else {
+			//			solenoid.set(DoubleSolenoid.Value.kReverse); // Reverse
+			//		}
+
 		}
-
-		frontLeftTal.set(0.6 * left);
-		backLeftTal.set(0.6 * left);
-		frontRightTal.set(0.6 * right);
-		backRightTal.set(0.6 * right);
-
-		//		if (gamepad.getBumper(Hand.kLeft)) {
-		//			solenoid.set(DoubleSolenoid.Value.kForward); // Forward
-		//		} else {
-		//			solenoid.set(DoubleSolenoid.Value.kReverse); // Reverse
-		//		}
-
 	}
-
 	/**
 	 * This function is called periodically during test mode
 	 */
