@@ -3,6 +3,7 @@ package org.usfirst.frc.team2415.robot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -16,12 +17,13 @@ public class Elevator extends Subsystem {
 	public final double ELEVATOR_MULTIPLIER = 0.25;
 	public final double ELEVATOR_DEADBAND = 0.05;
 
-	private WPI_TalonSRX elevMotor;
+	private Victor elev1, elev2;
 	private DoubleSolenoid leftSolenoid, rightSolenoid;
 	private static boolean pistonEngaged;
 
 	public Elevator() {
-		elevMotor = new WPI_TalonSRX(RobotMap.ELEVATOR);
+		elev1 = new Victor(RobotMap.ELEVATOR1);
+		elev2 = new Victor(RobotMap.ELEVATOR2);
 		leftSolenoid = new DoubleSolenoid(RobotMap.PCM_ID, RobotMap.LEFT_SOLENOID_FRONT, RobotMap.LEFT_SOLENOID_BACK);
 		//rightSolenoid = new DoubleSolenoid(RobotMap.PCM_ID, RobotMap.RIGHT_SOLENOID_FRONT, RobotMap.RIGHT_SOLENOID_BACK);
 	}
@@ -53,7 +55,8 @@ public class Elevator extends Subsystem {
 	public void elevate(double leftTrigger, double rightTrigger) {
 		if (leftTrigger > ELEVATOR_DEADBAND || rightTrigger > ELEVATOR_DEADBAND) {
 			double elevatorMotorOutput = rightTrigger - leftTrigger;
-			elevMotor.set(elevatorMotorOutput*ELEVATOR_MULTIPLIER);
+			elev1.set(elevatorMotorOutput*ELEVATOR_MULTIPLIER);
+			elev2.set(elevatorMotorOutput*ELEVATOR_MULTIPLIER);
 		}
 	}
 }

@@ -2,14 +2,15 @@
 
 package org.usfirst.frc.team2415.robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.DigitalInput;
+
+import edu.wpi.first.wpilibj.Victor;
+//import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,13 +34,13 @@ public class Robot extends IterativeRobot {
 
 	final int FORWARD_SOLENOID = 4;
 	final int BACKWARD_SOLENOID = 5;
-
+/*
 	final int SWITCH_SWITCH = 6;
 	final int SCALE_SWITCH = 7;
 	final int TOP_SWITCH = 8;
-
+*/
 	public XboxController gamepad;
-	public WPI_TalonSRX frontLeftTal, frontRightTal, backLeftTal, backRightTal;
+	public Victor frontLeftTal, frontRightTal, backLeftTal, backRightTal;
 	public Compressor compressor;
 	public Elevator elevator;
 	//public DigitalInput switchSwitch, scaleSwitch, topSwitch;
@@ -65,10 +66,10 @@ public class Robot extends IterativeRobot {
 
 		gamepad = new XboxController(0);
 
-		frontLeftTal = new WPI_TalonSRX(FRONT_LEFT_TALON);
-		frontRightTal = new WPI_TalonSRX(FRONT_RIGHT_TALON);
-		backLeftTal = new WPI_TalonSRX(BACK_LEFT_TALON);
-		backRightTal = new WPI_TalonSRX(BACK_RIGHT_TALON);
+		frontLeftTal = new Victor(FRONT_LEFT_TALON);
+		frontRightTal = new Victor(FRONT_RIGHT_TALON);
+		backLeftTal = new Victor(BACK_LEFT_TALON);
+		backRightTal = new Victor(BACK_RIGHT_TALON);
 		
 		elevator = new Elevator();
 		/*
