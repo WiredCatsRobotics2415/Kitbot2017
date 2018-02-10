@@ -14,16 +14,16 @@ public class Elevator extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
-	public final double ELEVATOR_MULTIPLIER = 0.25;
-	public final double ELEVATOR_DEADBAND = 0.05;
+	public final double ELEVATOR_MULTIPLIER = 0.01;
+	public final double ELEVATOR_DEADBAND = 0.2;
 
-	private Victor elevator;
-	private DoubleSolenoid leftSolenoid, rightSolenoid;
+	private Victor elevator1, elevator2;
+	private DoubleSolenoid leftSolenoid; //rightSolenoid;
 	private static boolean pistonEngaged;
 
 	public Elevator() {
-		elevator = new Victor(RobotMap.ELEVATOR_MOTOR);
-		//elev2 = new Victor(RobotMap.ELEVATOR2);
+		elevator1 = new Victor(RobotMap.ELEVATOR_MOTOR1);
+		elevator2 = new Victor(RobotMap.ELEVATOR_MOTOR2);
 		leftSolenoid = new DoubleSolenoid(RobotMap.PCM_ID, RobotMap.LEFT_SOLENOID_FRONT, RobotMap.LEFT_SOLENOID_BACK);
 		//rightSolenoid = new DoubleSolenoid(RobotMap.PCM_ID, RobotMap.RIGHT_SOLENOID_FRONT, RobotMap.RIGHT_SOLENOID_BACK);
 	}
@@ -55,8 +55,8 @@ public class Elevator extends Subsystem {
 	public void elevate(double leftTrigger, double rightTrigger) {
 		if (leftTrigger > ELEVATOR_DEADBAND || rightTrigger > ELEVATOR_DEADBAND) {
 			double elevatorMotorOutput = rightTrigger - leftTrigger;
-			elevator.set(elevatorMotorOutput*ELEVATOR_MULTIPLIER);
-			//elev2.set(elevatorMotorOutput*ELEVATOR_MULTIPLIER);
+			elevator1.set(elevatorMotorOutput*ELEVATOR_MULTIPLIER);
+			elevator2.set(elevatorMotorOutput*ELEVATOR_MULTIPLIER);
 		}
 	}
 }

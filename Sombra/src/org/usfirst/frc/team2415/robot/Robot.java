@@ -26,21 +26,14 @@ public class Robot extends IterativeRobot {
 	long startTime;
 
 	final double DEADBAND = 0.05;
-
-	final int FRONT_RIGHT_TALON = 14;
-	final int BACK_RIGHT_TALON = 15;
-	final int FRONT_LEFT_TALON = 0;
-	final int BACK_LEFT_TALON = 1;
-
-	final int FORWARD_SOLENOID = 4;
-	final int BACKWARD_SOLENOID = 5;
+	final double SPEED_COEFFICIENT = 0.6;
 /*
 	final int SWITCH_SWITCH = 6;
 	final int SCALE_SWITCH = 7;
 	final int TOP_SWITCH = 8;
 */
 	public XboxController gamepad;
-	public Victor frontLeftTal, frontRightTal;// backLeftTal, backRightTal;
+	public Victor frontLeftTal, frontRightTal, backLeftTal, backRightTal;
 	public Compressor compressor;
 	public Elevator elevator;
 	//public DigitalInput switchSwitch, scaleSwitch, topSwitch;
@@ -66,10 +59,10 @@ public class Robot extends IterativeRobot {
 
 		gamepad = new XboxController(0);
 
-		frontLeftTal = new Victor(FRONT_LEFT_TALON);
-		frontRightTal = new Victor(FRONT_RIGHT_TALON);
-		//backLeftTal = new Victor(BACK_LEFT_TALON);
-		//backRightTal = new Victor(BACK_RIGHT_TALON);
+		frontLeftTal = new Victor(RobotMap.LEFT_TALON_FRONT);
+		frontRightTal = new Victor(RobotMap.RIGHT_TALON_FRONT);
+		backLeftTal = new Victor(RobotMap.LEFT_TALON_BACK);
+		backRightTal = new Victor(RobotMap.RIGHT_TALON_BACK);
 		
 		elevator = new Elevator();
 		/*
@@ -137,18 +130,19 @@ public class Robot extends IterativeRobot {
 
 		double right = -leftY + rightX;
 		double left = -leftY - rightX;
-
-		if (leftY > 0) {
+		
+		//Compensator for the drivetrain
+		/*if (leftY > 0) {
 			left *= 1.2;
 		} else {
 			right *= -2.7;
-		}
-		frontLeftTal.set(0.6 * left);
-		//backLeftTal.set(0.6 * left);
-		frontRightTal.set(0.6 * right);
-		//backRightTal.set(0.6 * right);
+		}*/
+		frontLeftTal.set(SPEED_COEFFICIENT * left);
+		backLeftTal.set(SPEED_COEFFICIENT * left);
+		frontRightTal.set(SPEED_COEFFICIENT * right);
+		backRightTal.set(SPEED_COEFFICIENT * right);
 		
-		elevator.elevate(gamepad.getRawAxis(4), gamepad.getRawAxis(3));
+		elevator.elevate(gamepad.getTriggerAxis(Hand.kLeft), gamepad.getTriggerAxis(Hand.kRight));
 		
 		//		if (gamepad.getBumper(Hand.kLeft)) {
 		//			solenoid.set(DoubleSolenoid.Value.kForward); // Forward
