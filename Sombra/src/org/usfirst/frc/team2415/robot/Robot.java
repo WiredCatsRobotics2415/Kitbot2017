@@ -40,7 +40,7 @@ public class Robot extends IterativeRobot {
 	final int TOP_SWITCH = 8;
 */
 	public XboxController gamepad;
-	public Victor frontLeftTal, frontRightTal, backLeftTal, backRightTal;
+	public Victor frontLeftTal, frontRightTal;// backLeftTal, backRightTal;
 	public Compressor compressor;
 	public Elevator elevator;
 	//public DigitalInput switchSwitch, scaleSwitch, topSwitch;
@@ -68,8 +68,8 @@ public class Robot extends IterativeRobot {
 
 		frontLeftTal = new Victor(FRONT_LEFT_TALON);
 		frontRightTal = new Victor(FRONT_RIGHT_TALON);
-		backLeftTal = new Victor(BACK_LEFT_TALON);
-		backRightTal = new Victor(BACK_RIGHT_TALON);
+		//backLeftTal = new Victor(BACK_LEFT_TALON);
+		//backRightTal = new Victor(BACK_RIGHT_TALON);
 		
 		elevator = new Elevator();
 		/*
@@ -144,9 +144,9 @@ public class Robot extends IterativeRobot {
 			right *= -2.7;
 		}
 		frontLeftTal.set(0.6 * left);
-		backLeftTal.set(0.6 * left);
+		//backLeftTal.set(0.6 * left);
 		frontRightTal.set(0.6 * right);
-		backRightTal.set(0.6 * right);
+		//backRightTal.set(0.6 * right);
 		
 		elevator.elevate(gamepad.getRawAxis(4), gamepad.getRawAxis(3));
 		

@@ -17,13 +17,13 @@ public class Elevator extends Subsystem {
 	public final double ELEVATOR_MULTIPLIER = 0.25;
 	public final double ELEVATOR_DEADBAND = 0.05;
 
-	private Victor elev1, elev2;
+	private Victor elevator;
 	private DoubleSolenoid leftSolenoid, rightSolenoid;
 	private static boolean pistonEngaged;
 
 	public Elevator() {
-		elev1 = new Victor(RobotMap.ELEVATOR1);
-		elev2 = new Victor(RobotMap.ELEVATOR2);
+		elevator = new Victor(RobotMap.ELEVATOR_MOTOR);
+		//elev2 = new Victor(RobotMap.ELEVATOR2);
 		leftSolenoid = new DoubleSolenoid(RobotMap.PCM_ID, RobotMap.LEFT_SOLENOID_FRONT, RobotMap.LEFT_SOLENOID_BACK);
 		//rightSolenoid = new DoubleSolenoid(RobotMap.PCM_ID, RobotMap.RIGHT_SOLENOID_FRONT, RobotMap.RIGHT_SOLENOID_BACK);
 	}
@@ -55,8 +55,8 @@ public class Elevator extends Subsystem {
 	public void elevate(double leftTrigger, double rightTrigger) {
 		if (leftTrigger > ELEVATOR_DEADBAND || rightTrigger > ELEVATOR_DEADBAND) {
 			double elevatorMotorOutput = rightTrigger - leftTrigger;
-			elev1.set(elevatorMotorOutput*ELEVATOR_MULTIPLIER);
-			elev2.set(elevatorMotorOutput*ELEVATOR_MULTIPLIER);
+			elevator.set(elevatorMotorOutput*ELEVATOR_MULTIPLIER);
+			//elev2.set(elevatorMotorOutput*ELEVATOR_MULTIPLIER);
 		}
 	}
 }
