@@ -18,13 +18,13 @@ public class Elevator extends Subsystem {
 	public final double ELEVATOR_DEADBAND = 0.2;
 
 	private Victor elevator1, elevator2;
-	private DoubleSolenoid leftSolenoid; //rightSolenoid;
+	//private DoubleSolenoid leftSolenoid; //rightSolenoid;
 	private static boolean pistonEngaged;
 
 	public Elevator() {
 		elevator1 = new Victor(RobotMap.ELEVATOR_MOTOR1);
 		elevator2 = new Victor(RobotMap.ELEVATOR_MOTOR2);
-		leftSolenoid = new DoubleSolenoid(RobotMap.PCM_ID, RobotMap.LEFT_SOLENOID_FRONT, RobotMap.LEFT_SOLENOID_BACK);
+		//leftSolenoid = new DoubleSolenoid(RobotMap.PCM_ID, RobotMap.LEFT_SOLENOID_FRONT, RobotMap.LEFT_SOLENOID_BACK);
 		//rightSolenoid = new DoubleSolenoid(RobotMap.PCM_ID, RobotMap.RIGHT_SOLENOID_FRONT, RobotMap.RIGHT_SOLENOID_BACK);
 	}
 
@@ -35,20 +35,20 @@ public class Elevator extends Subsystem {
 
 	public void engagePiston() {
 		//senses whether pistons are engaged
-		if (leftSolenoid.get() == DoubleSolenoid.Value.kForward) {
+		/*if (leftSolenoid.get() == DoubleSolenoid.Value.kForward) {
 			pistonEngaged = true;
 		} else if (leftSolenoid.get() != DoubleSolenoid.Value.kReverse) {
 			pistonEngaged = false;
 		} else {
 			System.out.println("Error! Pistons are not in sync or reader error.");
 		}	
-		this.setPistons(!pistonEngaged); //set pistons to opposite of current state
+		this.setPistons(!pistonEngaged); //set pistons to opposite of current state*/
 	}
 	private void setPistons(boolean pistonValue) {
 		if (pistonValue) {
-		leftSolenoid.set(DoubleSolenoid.Value.kForward);
+		//leftSolenoid.set(DoubleSolenoid.Value.kForward);
 		} else {
-			leftSolenoid.set(DoubleSolenoid.Value.kReverse);
+			//leftSolenoid.set(DoubleSolenoid.Value.kReverse);
 		}
 		//rightSolenoid.set(pistonValue);
 	}
