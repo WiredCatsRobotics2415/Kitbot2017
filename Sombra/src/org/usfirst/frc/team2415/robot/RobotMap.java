@@ -13,7 +13,7 @@ public class RobotMap {
 
 	public static final int ELEVATOR1 = 4;
 	public static final int ELEVATOR2 = 5;
-	
+
 	public static final int LEFT_SOLENOID_FRONT = 0;
 	public static final int RIGHT_SOLENOID_FRONT = 1;
 	public static final int LEFT_SOLENOID_BACK = 8;

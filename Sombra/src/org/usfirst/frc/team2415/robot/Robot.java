@@ -93,10 +93,12 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		startTime = System.currentTimeMillis();
-		/*autoSelected = chooser.getSelected();
-		  autoSelected = SmartDashboard.getString("Auto Selector",
-		  defaultAuto);
-		System.out.println("Auto selected: " + autoSelected);*/
+		while (System.currentTimeMillis()+5000 > startTime) {
+			/*autoSelected = chooser.getSelected();
+			  autoSelected = SmartDashboard.getString("Auto Selector",
+			  defaultAuto);
+			System.out.println("Auto selected: " + autoSelected);*/
+		}
 	}
 
 	/**
@@ -122,7 +124,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		double leftY = -gamepad.getRawAxis(4);
+		double leftY = -gamepad.getRawAxis(3);
 		double rightX =  gamepad.getRawAxis(1);
 
 
@@ -139,14 +141,14 @@ public class Robot extends IterativeRobot {
 		if (leftY > 0) {
 			left *= 1.2;
 		} else {
-			right *= 2.7;
+			right *= -2.7;
 		}
 		frontLeftTal.set(0.6 * left);
 		backLeftTal.set(0.6 * left);
 		frontRightTal.set(0.6 * right);
 		backRightTal.set(0.6 * right);
 		
-		elevator.elevate(gamepad.getRawAxis(2), gamepad.getRawAxis(3));
+		elevator.elevate(gamepad.getRawAxis(4), gamepad.getRawAxis(3));
 		
 		//		if (gamepad.getBumper(Hand.kLeft)) {
 		//			solenoid.set(DoubleSolenoid.Value.kForward); // Forward
