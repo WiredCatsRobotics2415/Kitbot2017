@@ -2,7 +2,7 @@
 
 package org.usfirst.frc.team2415.robot;
 
-
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -33,7 +33,8 @@ public class Robot extends IterativeRobot {
 	final int TOP_SWITCH = 8;
 */
 	public XboxController gamepad;
-	public Victor frontLeftTal, frontRightTal, backLeftTal, backRightTal;
+	public Victor frontLeftTal, backLeftTal, backRightTal;
+	public WPI_TalonSRX frontRightTal;
 	public Compressor compressor;
 	public Elevator elevator;
 	//public DigitalInput switchSwitch, scaleSwitch, topSwitch;
@@ -60,7 +61,7 @@ public class Robot extends IterativeRobot {
 		gamepad = new XboxController(0);
 
 		frontLeftTal = new Victor(RobotMap.LEFT_TALON_FRONT);
-		frontRightTal = new Victor(RobotMap.RIGHT_TALON_FRONT);
+		frontRightTal = new WPI_TalonSRX(RobotMap.RIGHT_TALON_FRONT);
 		backLeftTal = new Victor(RobotMap.LEFT_TALON_BACK);
 		backRightTal = new Victor(RobotMap.RIGHT_TALON_BACK);
 		
