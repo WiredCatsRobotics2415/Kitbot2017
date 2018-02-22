@@ -4,11 +4,9 @@ package org.usfirst.frc.team2415.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.IterativeRobot;
-
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 //import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
@@ -34,7 +32,7 @@ public class Robot extends IterativeRobot {
 */
 	public XboxController gamepad;
 	public Victor frontLeftTal, backLeftTal, backRightTal;
-	public WPI_TalonSRX frontRightTal;
+	public /*WPI_TalonSRX*/ Talon frontRightTal;
 	//public Compressor compressor;
 	public Elevator elevator;
 	//public DigitalInput switchSwitch, scaleSwitch, topSwitch;
@@ -61,7 +59,7 @@ public class Robot extends IterativeRobot {
 		gamepad = new XboxController(0);
 
 		frontLeftTal = new Victor(RobotMap.LEFT_TALON_FRONT);
-		frontRightTal = new WPI_TalonSRX(RobotMap.RIGHT_TALON_FRONT);
+		frontRightTal = new /*WPI_TalonSRX*/Talon(RobotMap.RIGHT_TALON_FRONT);
 		backLeftTal = new Victor(RobotMap.LEFT_TALON_BACK);
 		backRightTal = new Victor(RobotMap.RIGHT_TALON_BACK);
 		
@@ -119,7 +117,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		double leftY = -gamepad.getRawAxis(3);
-		double rightX =  gamepad.getRawAxis(1);
+		double rightX =  gamepad.getRawAxis(1);//we need to change this from 1 to the correct axis
 
 
 		if (Math.abs(rightX) < DEADBAND) {
@@ -129,8 +127,8 @@ public class Robot extends IterativeRobot {
 			leftY = 0;
 		}
 
-		double right = -leftY + rightX;
-		double left = -leftY - rightX;
+		double right = -leftY + rightX; 
+		double left = -leftY - rightX; //need to make this a bit slower to compensate
 		
 		//Compensator for the drivetrain
 		/*if (leftY > 0) {
@@ -159,4 +157,4 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 	}
-}
+} 
