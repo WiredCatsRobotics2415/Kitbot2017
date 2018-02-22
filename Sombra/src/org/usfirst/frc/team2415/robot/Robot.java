@@ -127,7 +127,7 @@ public class Robot extends IterativeRobot {
 			leftY = 0;
 		}
 
-		double right = -leftY + rightX; 
+		double right = -leftY + rightX;
 		double left = -leftY - rightX; //need to make this a bit slower to compensate
 		
 		//Compensator for the drivetrain
