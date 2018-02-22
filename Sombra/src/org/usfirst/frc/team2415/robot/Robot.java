@@ -35,7 +35,7 @@ public class Robot extends IterativeRobot {
 	public XboxController gamepad;
 	public Victor frontLeftTal, backLeftTal, backRightTal;
 	public WPI_TalonSRX frontRightTal;
-	public Compressor compressor;
+	//public Compressor compressor;
 	public Elevator elevator;
 	//public DigitalInput switchSwitch, scaleSwitch, topSwitch;
 
@@ -56,7 +56,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 
-		compressor = new Compressor();
+		//compressor = new Compressor();
 
 		gamepad = new XboxController(0);
 
