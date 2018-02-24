@@ -53,10 +53,10 @@ public class Elevator extends Subsystem {
 		//rightSolenoid.set(pistonValue);
 	}
 	public void elevate(double leftTrigger, double rightTrigger) {
-		if (leftTrigger > ELEVATOR_DEADBAND || rightTrigger > ELEVATOR_DEADBAND) {
+		//if (leftTrigger > ELEVATOR_DEADBAND || rightTrigger > ELEVATOR_DEADBAND) {
 			double elevatorMotorOutput = rightTrigger - leftTrigger;
 			elevator1.set(elevatorMotorOutput*ELEVATOR_MULTIPLIER);
 			elevator2.set(elevatorMotorOutput*ELEVATOR_MULTIPLIER);
-		}
+		//}
 	}
 }

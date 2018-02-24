@@ -24,14 +24,15 @@ public class Robot extends IterativeRobot {
 	long startTime;
 
 	final double DEADBAND = 0.05;
-	final double SPEED_COEFFICIENT = 0.6;
+	final double LEFT_SPEED_COEFFICIENT = 0.6;
+	final double RIGHT_SPEED_COEFFICIENT = 0.9;
 /*
 	final int SWITCH_SWITCH = 6;
 	final int SCALE_SWITCH = 7;
 	final int TOP_SWITCH = 8;
 */
 	public XboxController gamepad;
-	public Victor frontLeftTal, backLeftTal, backRightTal;
+	public Victor frontLeftTal, backLeftTal, backRightTal, elev1, elev2;
 	public /*WPI_TalonSRX*/ Talon frontRightTal;
 	//public Compressor compressor;
 	public Elevator elevator;
@@ -62,13 +63,10 @@ public class Robot extends IterativeRobot {
 		frontRightTal = new /*WPI_TalonSRX*/Talon(RobotMap.RIGHT_TALON_FRONT);
 		backLeftTal = new Victor(RobotMap.LEFT_TALON_BACK);
 		backRightTal = new Victor(RobotMap.RIGHT_TALON_BACK);
-		
-		elevator = new Elevator();
-		/*
-		switchSwitch = new DigitalInput(SWITCH_SWITCH);
-		scaleSwitch = new DigitalInput(SCALE_SWITCH);
-		topSwitch = new DigitalInput(TOP_SWITCH);
-		 */
+		elev1 = new Victor(RobotMap.ELEVATOR_MOTOR1);
+		elev2 = new Victor(RobotMap.ELEVATOR_MOTOR2);
+		//elevator = new Elevator();
+
 	}
 
 	/**
@@ -116,8 +114,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		double leftY = -gamepad.getRawAxis(3);
-		double rightX =  gamepad.getRawAxis(1);//we need to change this from 1 to the correct axis
+		double leftY = -gamepad.getRawAxis(4);
+		double rightX =  gamepad.getRawAxis(1);
 
 
 		if (Math.abs(rightX) < DEADBAND) {
@@ -130,18 +128,22 @@ public class Robot extends IterativeRobot {
 		double right = -leftY + rightX;
 		double left = -leftY - rightX; //need to make this a bit slower to compensate
 		
-		//Compensator for the drivetrain
-		/*if (leftY > 0) {
-			left *= 1.2;
-		} else {
-			right *= -2.7;
-		}*/
-		frontLeftTal.set(SPEED_COEFFICIENT * left);
-		backLeftTal.set(SPEED_COEFFICIENT * left);
-		frontRightTal.set(SPEED_COEFFICIENT * right);
-		backRightTal.set(SPEED_COEFFICIENT * right);
+
+		frontLeftTal.set(LEFT_SPEED_COEFFICIENT * left);
+		backLeftTal.set(LEFT_SPEED_COEFFICIENT * left);
+		frontRightTal.set(RIGHT_SPEED_COEFFICIENT * right);
+		backRightTal.set(RIGHT_SPEED_COEFFICIENT * right);
 		
-		elevator.elevate(gamepad.getTriggerAxis(Hand.kLeft), gamepad.getTriggerAxis(Hand.kRight));
+		if (Math.abs(gamepad.getRawAxis(5)) >= 0.1) {
+		elev1.set(-0.4*gamepad.getRawAxis(5));
+		elev2.set(-0.4*gamepad.getRawAxis(5));
+		} else {//anti-gravity
+			elev1.set(0.12);
+			elev2.set(0.12);
+		}
+		
+		//elevator.elevate(gamepad.getRawAxis(2), gamepad.getRawAxis(3));
+		
 		
 		//		if (gamepad.getBumper(Hand.kLeft)) {
 		//			solenoid.set(DoubleSolenoid.Value.kForward); // Forward
