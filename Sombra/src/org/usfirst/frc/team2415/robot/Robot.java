@@ -4,7 +4,7 @@ package org.usfirst.frc.team2415.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
@@ -32,11 +32,8 @@ public class Robot extends IterativeRobot {
 	final int TOP_SWITCH = 8;
 */
 	public XboxController gamepad;
-	public Victor frontLeftTal, backLeftTal, backRightTal, elev1, elev2;
-	public /*WPI_TalonSRX*/ Talon frontRightTal;
-	//public Compressor compressor;
-	public Elevator elevator;
-	//public DigitalInput switchSwitch, scaleSwitch, topSwitch;
+	public WPI_TalonSRX frontLeftTal, backLeftTal, backRightTal, frontRightTal, pivot;
+	public DigitalInput highPiv, lowPiv;
 
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
@@ -59,13 +56,11 @@ public class Robot extends IterativeRobot {
 
 		gamepad = new XboxController(0);
 
-		frontLeftTal = new Victor(RobotMap.LEFT_TALON_FRONT);
-		frontRightTal = new /*WPI_TalonSRX*/Talon(RobotMap.RIGHT_TALON_FRONT);
-		backLeftTal = new Victor(RobotMap.LEFT_TALON_BACK);
-		backRightTal = new Victor(RobotMap.RIGHT_TALON_BACK);
-		elev1 = new Victor(RobotMap.ELEVATOR_MOTOR1);
-		elev2 = new Victor(RobotMap.ELEVATOR_MOTOR2);
-		//elevator = new Elevator();
+		frontLeftTal = new WPI_TalonSRX(RobotMap.LEFT_TALON_FRONT);
+		frontRightTal = new WPI_TalonSRX(RobotMap.RIGHT_TALON_FRONT);
+		backLeftTal = new WPI_TalonSRX(RobotMap.LEFT_TALON_BACK);
+		backRightTal = new WPI_TalonSRX(RobotMap.RIGHT_TALON_BACK);
+		pivot = new WPI_TalonSRX(RobotMap.PIVOT);
 
 	}
 
@@ -134,12 +129,12 @@ public class Robot extends IterativeRobot {
 		frontRightTal.set(RIGHT_SPEED_COEFFICIENT * right);
 		backRightTal.set(RIGHT_SPEED_COEFFICIENT * right);
 		
-		if (Math.abs(gamepad.getRawAxis(5)) >= 0.1) {
-		elev1.set(-0.4*gamepad.getRawAxis(5));
-		elev2.set(-0.4*gamepad.getRawAxis(5));
-		} else {//anti-gravity
-			elev1.set(0.12);
-			elev2.set(0.12);
+		if (gamepad.getAButton() && !highPiv.get()) {
+			pivot.set(0.5);
+		} else if (gamepad.getBButton() && !lowPiv.get()) {
+			pivot.set(-0.5);
+		} else {
+			pivot.set(0);
 		}
 		
 		//elevator.elevate(gamepad.getRawAxis(2), gamepad.getRawAxis(3));

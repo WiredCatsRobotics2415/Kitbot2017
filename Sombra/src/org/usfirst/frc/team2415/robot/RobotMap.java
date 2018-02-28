@@ -11,8 +11,7 @@ public class RobotMap {
 	/*public static final int GEAR_SHIFTER_FRONT = 2;
 	public static final int GEAR_SHIFTER_BACK = 7;*/
 
-	public static final int ELEVATOR_MOTOR1 = 1;
-	public static final int ELEVATOR_MOTOR2 = 4;
+	public static final int PIVOT = 1;
 
 	/*public static final int LEFT_SOLENOID_FRONT = 0;
 	public static final int RIGHT_SOLENOID_FRONT = 1;
