@@ -3,9 +3,9 @@ package org.usfirst.frc.team2415.robot;
 public class RobotMap {
 	public static final int PCM_ID = 20;
 
-	public static final int LEFT_TALON_BACK = 2; 
+	public static final int LEFT_TALON_BACK = 1; 
 	public static final int LEFT_TALON_FRONT = 0; 
-	public static final int RIGHT_TALON_BACK = 5; 
+	public static final int RIGHT_TALON_BACK = 2; 
 	public static final int RIGHT_TALON_FRONT = 3;
 
 	/*public static final int GEAR_SHIFTER_FRONT = 2;

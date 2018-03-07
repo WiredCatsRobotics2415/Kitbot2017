@@ -22,8 +22,8 @@ public class Elevator extends Subsystem {
 	private static boolean pistonEngaged;
 
 	public Elevator() {
-		elevator1 = new Victor(RobotMap.ELEVATOR_MOTOR1);
-		elevator2 = new Victor(RobotMap.ELEVATOR_MOTOR2);
+		elevator1 = new Victor(RobotMap.PIVOT);
+//		elevator2 = new Victor(RobotMap.ELEVATOR_MOTOR2);
 		//leftSolenoid = new DoubleSolenoid(RobotMap.PCM_ID, RobotMap.LEFT_SOLENOID_FRONT, RobotMap.LEFT_SOLENOID_BACK);
 		//rightSolenoid = new DoubleSolenoid(RobotMap.PCM_ID, RobotMap.RIGHT_SOLENOID_FRONT, RobotMap.RIGHT_SOLENOID_BACK);
 	}
