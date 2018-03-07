@@ -4,6 +4,7 @@ package org.usfirst.frc.team2415.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Talon;
@@ -25,7 +26,7 @@ public class Robot extends IterativeRobot {
 
 	final double DEADBAND = 0.05;
 	final double LEFT_SPEED_COEFFICIENT = 0.6;
-	final double RIGHT_SPEED_COEFFICIENT = 0.9;
+	final double RIGHT_SPEED_COEFFICIENT = 0.6;
 /*
 	final int SWITCH_SWITCH = 6;
 	final int SCALE_SWITCH = 7;
@@ -51,8 +52,8 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
+//		CameraServer.getInstance().startAutomaticCapture();
 
-		//compressor = new Compressor();
 
 		gamepad = new XboxController(0);
 
@@ -61,6 +62,9 @@ public class Robot extends IterativeRobot {
 		backLeftTal = new WPI_TalonSRX(RobotMap.LEFT_TALON_BACK);
 		backRightTal = new WPI_TalonSRX(RobotMap.RIGHT_TALON_BACK);
 		pivot = new WPI_TalonSRX(RobotMap.PIVOT);
+		
+		lowPiv = new DigitalInput(RobotMap.LOW_PIVOT); 
+		highPiv = new DigitalInput(RobotMap.HIGH_PIVOT);
 
 	}
 
@@ -129,10 +133,10 @@ public class Robot extends IterativeRobot {
 		frontRightTal.set(RIGHT_SPEED_COEFFICIENT * right);
 		backRightTal.set(RIGHT_SPEED_COEFFICIENT * right);
 		
-		if (gamepad.getAButton() && !highPiv.get()) {
-			pivot.set(0.5);
-		} else if (gamepad.getBButton() && !lowPiv.get()) {
-			pivot.set(-0.5);
+		if (gamepad.getAButton() && highPiv.get()) {
+			pivot.set(1);
+		} else if (gamepad.getBButton() && lowPiv.get()) {
+			pivot.set(-1);
 		} else {
 			pivot.set(0);
 		}
